@@ -214,7 +214,8 @@ export function useGid<
   const gids = useRef(useGids());
   const fetcher = useFetcher();
   const isPreview = Boolean(usePreviewContext());
-  const {selectedLocale} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const selectedLocale = rootData?.selectedLocale;
 
   const gid = useRef(gids.current.get(id as string) as T | null);
 

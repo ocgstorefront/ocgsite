@@ -11,7 +11,9 @@ type Props = {
 };
 
 export default function GridBlock({value}: Props) {
-  const {sanityDataset, sanityProjectID} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const sanityDataset = rootData?.sanityDataset;
+  const sanityProjectID = rootData?.sanityProjectID;
 
   return (
     <div

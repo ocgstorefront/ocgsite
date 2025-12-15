@@ -1,20 +1,35 @@
 import clsx from 'clsx';
 
-import SanityFooter from '~/components/global/SanityFooter';
-import LogoIcon from '~/components/icons/Logo';
 import {Link} from '~/components/Link';
-import PortableText from '~/components/portableText/PortableText';
 import type {SanityLink} from '~/lib/sanity';
 import {useRootLoaderData} from '~/root';
+
+// Default footer links
+const DEFAULT_FOOTER_LINKS = [
+  {
+    _key: 'products',
+    _type: 'linkInternal' as const,
+    title: 'All Products',
+    slug: '/collections/all',
+  },
+  {
+    _key: 'cart',
+    _type: 'linkInternal' as const,
+    title: 'Cart',
+    slug: '/cart',
+  },
+];
 
 /**
  * A component that specifies the content of the footer on the website
  */
 export default function Footer() {
-  const {layout} = useRootLoaderData();
-  const {footer} = layout || {};
+  const rootData = useRootLoaderData();
+  const layout = rootData?.layout;
+  const footer = layout?.footer;
+  const links = footer?.links || DEFAULT_FOOTER_LINKS;
 
-  const renderLinks = footer?.links?.map((link: SanityLink) => {
+  const renderLinks = links.map((link: SanityLink) => {
     if (link._type === 'linkExternal') {
       return (
         <div className="mb-6" key={link._key}>
@@ -47,21 +62,22 @@ export default function Footer() {
 
   return (
     <footer className="-mt-overlap" role="contentinfo">
-      {/* AVKA Footer */}
       <div
         className={clsx(
-          'align-start relative overflow-hidden rounded-xl bg-peach px-4 py-8', //
+          'align-start relative overflow-hidden rounded-xl bg-peach px-4 py-8',
           'md:px-8 md:py-10',
         )}
       >
         <div
           className={clsx(
-            'flex flex-col justify-between', //
+            'flex flex-col justify-between',
             'md:flex-row',
           )}
         >
           <div className="pb-4">
-            <LogoIcon />
+            <Link to="/" className="text-2xl font-bold text-darkGray">
+              On Call Gummies
+            </Link>
           </div>
 
           <div
@@ -73,19 +89,10 @@ export default function Footer() {
             {renderLinks}
           </div>
         </div>
-        {footer?.text && (
-          <PortableText
-            blocks={footer.text}
-            className={clsx(
-              'text-xs', //
-              'text-sm text-darkGray',
-            )}
-          />
-        )}
+        <div className="text-sm text-darkGray">
+          © {new Date().getFullYear()} On Call Gummies. All rights reserved.
+        </div>
       </div>
-
-      {/* Sanity Footer */}
-      <SanityFooter />
     </footer>
   );
 }

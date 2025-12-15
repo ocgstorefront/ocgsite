@@ -85,6 +85,40 @@ export const links: LinksFunction = () => {
   ];
 };
 
+// Default layout when Sanity is not configured
+const DEFAULT_LAYOUT: SanityLayout = {
+  menuLinks: [
+    {
+      _key: 'products',
+      _type: 'linkInternal',
+      title: 'Products',
+      slug: '/collections/all',
+    },
+    {
+      _key: 'about',
+      _type: 'linkInternal',
+      title: 'About',
+      slug: '/pages/about',
+    },
+  ],
+  footer: {
+    links: [
+      {
+        _key: 'products',
+        _type: 'linkInternal',
+        title: 'All Products',
+        slug: '/collections/all',
+      },
+    ],
+    text: null,
+  },
+  seo: {
+    title: 'On Call Gummies',
+    description: 'Premium vitamin gummies for your daily wellness',
+  },
+  notFoundPage: null,
+};
+
 export async function loader({context}: LoaderFunctionArgs) {
   const {cart} = context;
 
@@ -96,10 +130,19 @@ export async function loader({context}: LoaderFunctionArgs) {
 
   const preview = getPreview(context);
 
-  const [shop, layout] = await Promise.all([
-    context.storefront.query<{shop: Shop}>(SHOP_QUERY),
-    context.sanity.query<SanityLayout>({query: LAYOUT_QUERY, cache}),
-  ]);
+  // Fetch shop data from Shopify
+  const shop = await context.storefront.query<{shop: Shop}>(SHOP_QUERY);
+
+  // Try to fetch Sanity layout, but use defaults if it fails
+  let layout: SanityLayout = DEFAULT_LAYOUT;
+  try {
+    const sanityLayout = await context.sanity.query<SanityLayout>({query: LAYOUT_QUERY, cache});
+    if (sanityLayout && sanityLayout.menuLinks) {
+      layout = sanityLayout;
+    }
+  } catch (error) {
+    console.warn('Sanity layout fetch failed, using defaults:', error);
+  }
 
   const selectedLocale = context.storefront.i18n as I18nLocale;
 

@@ -69,7 +69,9 @@ function ModuleContent({
 }: {
   content: SanityAssetImage | SanityProductWithVariant;
 }) {
-  const {sanityDataset, sanityProjectID} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const sanityDataset = rootData?.sanityDataset;
+  const sanityProjectID = rootData?.sanityProjectID;
 
   switch (content?._type) {
     case 'image': {
