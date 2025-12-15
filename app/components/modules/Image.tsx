@@ -77,7 +77,9 @@ export default function ImageModule({module}: Props) {
 
 const ImageContent = ({module}: Props) => {
   const image = module.image;
-  const {sanityDataset, sanityProjectID} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const sanityDataset = rootData?.sanityDataset;
+  const sanityProjectID = rootData?.sanityProjectID;
 
   return (
     <div

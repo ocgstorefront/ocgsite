@@ -14,7 +14,8 @@ import {useRootLoaderData} from '~/root';
 
 export default function HeaderActions() {
   const {isOpen, openDrawer, closeDrawer} = useDrawer();
-  const {cart} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const cart = rootData?.cart;
 
   // Grab all the fetchers that are adding to cart
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);

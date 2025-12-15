@@ -8,7 +8,9 @@ type Props = {
 };
 
 export default function ImageWithProductHotspots({content}: Props) {
-  const {sanityDataset, sanityProjectID} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const sanityDataset = rootData?.sanityDataset;
+  const sanityProjectID = rootData?.sanityProjectID;
 
   return (
     <>

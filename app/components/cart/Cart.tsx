@@ -264,7 +264,8 @@ export function CartSummary({cost}: {cost: CartCost}) {
 }
 
 export function CartActions({cart}: {cart: Cart}) {
-  const {storeDomain} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const storeDomain = rootData?.storeDomain;
 
   if (!cart || !cart.checkoutUrl) return null;
 

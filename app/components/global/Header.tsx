@@ -6,12 +6,29 @@ import MobileNavigation from '~/components/global/MobileNavigation';
 import Navigation from '~/components/global/Navigation';
 import {useRootLoaderData} from '~/root';
 
+// Default navigation links
+const DEFAULT_MENU_LINKS = [
+  {
+    _key: 'products',
+    _type: 'linkInternal' as const,
+    title: 'Products',
+    slug: '/collections/all',
+  },
+  {
+    _key: 'about',
+    _type: 'linkInternal' as const,
+    title: 'About',
+    slug: '/pages/about',
+  },
+];
+
 /**
  * A server component that specifies the content of the header on the website
  */
 export default function Header() {
-  const {layout} = useRootLoaderData();
-  const {menuLinks} = layout || {};
+  const rootData = useRootLoaderData();
+  const layout = rootData?.layout;
+  const menuLinks = layout?.menuLinks || DEFAULT_MENU_LINKS;
 
   return (
     <header
@@ -23,8 +40,8 @@ export default function Header() {
       role="banner"
     >
       <HeaderBackground />
-      {menuLinks && <MobileNavigation menuLinks={menuLinks} />}
-      {menuLinks && <Navigation menuLinks={menuLinks} />}
+      <MobileNavigation menuLinks={menuLinks} />
+      <Navigation menuLinks={menuLinks} />
       {/* Accounts, country selector + cart toggle */}
       <HeaderActions />
     </header>

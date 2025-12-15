@@ -30,7 +30,8 @@ const ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
  */
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
   const {to, className, ...resOfProps} = props;
-  const {selectedLocale} = useRootLoaderData();
+  const rootData = useRootLoaderData();
+  const selectedLocale = rootData?.selectedLocale;
 
   let toWithLocale = to;
 
